@@ -23,18 +23,16 @@ Route::get('/', function () {
 });
 
 // Front end Routes
-Route::get('/categories', [FrontController::class, 'categories'])->name('home');
+Route::get('/home', [FrontController::class, 'categories'])->name('home');
 Route::get('/category/{id}', [FrontController::class, 'categoryProducts'])->name('products');
 Route::get('/product/{id}', [FrontController::class, 'ProductDetail'])->name('product_detail');
 Route::Post('/product-comment', [FrontController::class, 'postProductComment'])->name('products.comment');
 
 //end front end routes
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
-});
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 Route::middleware('auth')->group(function () {
     // categories and products views
     Route::get('/product', function () {
@@ -44,8 +42,8 @@ Route::middleware('auth')->group(function () {
         return view('category.index');
     })->name('category');
     //create and edit routes for products and categories
-    Route::resource('products', ProductController::class)->only(['create', 'edit']);
-    Route::resource('categories', CategoryController::class)->only(['create', 'edit']);
+    Route::resource('products', ProductController::class)->except('index');
+    Route::resource('categories', CategoryController::class)->except('index');
     //Routes for data-tables
     Route::get('/product-data', [ProductController::class, 'products'])->name('products.data');
     Route::get('/category-data', [CategoryController::class, 'category'])->name('category.data');
