@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -55,21 +56,8 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        // Validate input
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'images' => 'required|array|min:1', // At least one image is required
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validate each image
-            'categories' => 'required|array|min:1', // At least one category is required
-            'categories.*' => Rule::exists('categories', 'id'), // Validate each category
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
-        }
         // create logic for product
         $product = Product::create([
             'name' => $request->name,
@@ -83,8 +71,7 @@ class ProductController extends Controller
         // Upload and associate images with the product
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                // $image= Image::make($image)
-                // ->encode('jpg', 80);
+                $image= Image::make($image)->resize('250','250');
                 $path = $image->store('product_images', 'public');
                 $product->images()->create(['path' => $path]);
             }
@@ -121,7 +108,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, string $id)
     {
         $product = Product::find($id);
         if (!empty($product)) {
