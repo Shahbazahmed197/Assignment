@@ -22,17 +22,24 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => [
-               'required',
-                'string',
-                Rule::unique('products', 'name')->ignore($this->route('id'))
-            ],
+
+        $rules= [
+            'name' => 'required|string',
             'description' => 'required|string',
-            'images' => 'required|array|min:1', // At least one image is required
+             'images' => 'required|array|min:1', // At least one image is required
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validate each image
             'categories' => 'required|array|min:1', // At least one category is required
             'categories.*' => Rule::exists('categories', 'id'), // Validate each category
         ];
+        if($this->product_id){
+            $rules= [
+                'name' => 'required|string',
+                'description' => 'required|string',
+                'categories' => 'required|array|min:1', // At least one category is required
+                'categories.*' => Rule::exists('categories', 'id'), // Validate each category
+            ];
+        }
+
+        return $rules;
     }
 }

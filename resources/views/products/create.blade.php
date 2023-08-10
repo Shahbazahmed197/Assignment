@@ -5,6 +5,24 @@
 @endsection
 
 @section('content')
+<style>
+    .selected-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .selected-option {
+        background-color: #f0f0f0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+    }
+    .remove-option {
+        margin-left: 4px;
+        cursor: pointer;
+    }
+</style>
     <div class="py-12">
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -30,11 +48,14 @@
                             <!-- Product Categories (Multiple Select) -->
                             <div class="form-group">
                                 <label for="productCategories">Categories</label>
-                                <select class="form-control" id="productCategories" name="categories[]" multiple required>
+                                <div class="form-control-select-multiple">
+                                <select class="custom-select select2" id="productCategories"
+                                 name="categories[]" multiple required>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
+                                </div>
                             </div>
 
                             <!-- Product Images (Multiple Uploads) -->

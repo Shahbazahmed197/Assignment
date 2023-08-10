@@ -27,7 +27,7 @@ class AddCategoryRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                Rule::unique('categories', 'name')->ignore($this->route('categories'))
+                Rule::unique('categories', 'name')->ignore($this->route('category'))
             ],
         ];
     }

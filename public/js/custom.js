@@ -31,6 +31,9 @@ const Toast = Swal.mixin({
                         icon: 'success',
                         title: response.message
                     })
+                    setTimeout(function() {
+                        window.location.href = '/category';
+                    }, 1000);
                 },
                 error: function(xhr, status, error,response) {
                     // Show error message in the responseMessage div
@@ -66,12 +69,12 @@ const Toast = Swal.mixin({
                         'X-CSRF-TOKEN': csrfToken
                     },
                     success: function(response) {
-                        Toast.fire({
-                            icon: 'warning',
-                            title: response.message
-                        })
                         // Refresh the DataTable after successful deletion
                         $('#categories-table').DataTable().ajax.reload();
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.message
+                        })
                     },
                     error: function(xhr, status, error) {
                         Toast.fire({
@@ -107,6 +110,9 @@ const Toast = Swal.mixin({
                         icon: 'success',
                         title: response.message
                     })
+                    setTimeout(function() {
+                        window.location.href = '/category';
+                    }, 1000);
                 },
                 error: function(xhr, status, error) {
                     Toast.fire({
@@ -139,7 +145,9 @@ const Toast = Swal.mixin({
                             icon: 'success',
                             title: response.message
                         })
-
+                        setTimeout(function() {
+                            window.location.href = '/product';
+                        }, 1000);
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status === 422) { // HTTP status code for validation errors
@@ -160,22 +168,15 @@ const Toast = Swal.mixin({
         }
 
         //update product
-        function updateProductForm(product_id) {
-            var formData = {
-                name: $("#productName").val(),
-                description: $("#productDescription").val(),
-                categories: $("#productCategories").val(),
-                images: $("#productImages").val(),
-
-            };
+        function updateProductForm() {
+             var formData = new FormData(document.getElementById('productupdateForm'));
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
-                url: '/products/' + product_id,
-                type: 'PUT',
-                data: JSON.stringify(formData),
+                url: '/update-product',
+                type: 'POST',
+                data:formData,
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
-                    'Content-Type': 'application/json'
                 },
                 contentType: false,
                 processData: false,
@@ -184,6 +185,9 @@ const Toast = Swal.mixin({
                         icon: 'success',
                         title: response.message
                     })
+                    setTimeout(function() {
+                        window.location.href = '/product';
+                    }, 1000);
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status === 422) { // HTTP status code for validation errors
@@ -225,12 +229,12 @@ const Toast = Swal.mixin({
                         'X-CSRF-TOKEN': csrfToken
                     },
                     success: function(response) {
+                        // Refresh the DataTable after successful deletion
+                        $('#products-table').DataTable().ajax.reload();
                         Toast.fire({
                             icon: 'success',
                             title: response.message
                         })
-                        // Refresh the DataTable after successful deletion
-                        $('#products-table').DataTable().ajax.reload();
                     },
                     error: function(xhr, status, error) {
                         // Handle error if needed
