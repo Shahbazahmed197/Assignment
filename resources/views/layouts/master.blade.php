@@ -15,7 +15,9 @@
     <title>@yield('title')</title>
     <!-- StyleSheets  -->
     <link id="skin-default" rel="stylesheet" href="{{ asset('css/theme.css') }}">
-    <style>
+    <link id="skin-default" rel="stylesheet" href="{{ asset('css/dashlite.css') }}">
+
+      <style>
 
         .dataTables_filter{
             padding-bottom:20px;

@@ -8,6 +8,9 @@ use App\Models\Category;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
@@ -21,21 +24,31 @@ class ProductController extends Controller
      */
     public function products()
     {
-    $products = Product::with('categories')->select(['id', 'name','created_at']);
+        $products = Product::with('categories')->select(['id', 'name', 'created_at']);
 
-    return DataTables::of($products)
-        ->addColumn('categories', function ($product) {
-            return implode(', ', $product->categories()->pluck('name')->toArray());
-        })
-        ->editColumn('created_at', function ($product) {
-            return Carbon::parse($product->created_at)->format('Y-m-d');
-        })
-        ->make(true);
-}
+        return DataTables::of($products)
+            ->addColumn('categories', function ($product) {
+                return implode(', ', $product->categories()->pluck('name')->toArray());
+            })
+            ->editColumn('created_at', function ($product) {
+                return Carbon::parse($product->created_at)->format('Y-m-d');
+            })
+            ->make(true);
+    }
 
-     public function index(Request $request)
+    public function index(Request $request)
     {
-        $products = Product::latest()->paginate(10);
+        $query = Product::query();
+        $query->when($request->has('name'), function ($query) use ($request) {
+            return $query->where('name', 'like', '%' . $request->input('name') . '%');
+        });
+        $products = $query
+            ->select([
+                'id', 'name', 'slug', 'description',
+                DB::raw('DATE_FORMAT(created_at, "%d-%M-%Y") AS listed_on')
+            ])
+            ->latest()
+            ->paginate(10);
         if (!$products->isEmpty()) {
             $response = response()->json(["message" => "products found", "products" => $products], 200);
         } else {
@@ -49,8 +62,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories=Category::get(['id','name']);
-        return view('products.create',compact('categories'));
+        $categories = Category::get(['id', 'name']);
+        return view('products.create', compact('categories'));
     }
 
     /**
@@ -61,7 +74,7 @@ class ProductController extends Controller
         // create logic for product
         $product = Product::create([
             'name' => $request->name,
-            'slug' => Str::slug($request->name),
+            'slug' => generateSlug($request->name),
             'description' => $request->description,
             // Other fields
         ]);
@@ -71,9 +84,13 @@ class ProductController extends Controller
         // Upload and associate images with the product
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $image= Image::make($image)->resize('250','250');
-                $path = $image->store('product_images', 'public');
-                $product->images()->create(['path' => $path]);
+                $originalExtension = $image->getClientOriginalExtension();
+                $image = Image::make($image)->resize('250', '250')->encode();
+                $filename = 'image_' . time() .'.'. $originalExtension; // Generate a unique filename
+                $imagePath = 'product_images/' . $filename;
+                Storage::disk('public')->put($imagePath, $image);
+                // $path = $image->store('product_images', 'public');
+                $product->images()->create(['path' => $imagePath]);
             }
         }
 
@@ -100,19 +117,19 @@ class ProductController extends Controller
     public function edit(string $id)
     {
 
-            $categories=Category::get(['id','name']);
-            $product=Product::where('id',$id)->with(['categories','images'])->first();
-            return view('products.edit',compact('categories','product'));
+        $categories = Category::get(['id', 'name']);
+        $product = Product::where('id', $id)->with(['categories', 'images'])->first();
+        $product_categories = $product->categories()->pluck('category_id')->toArray();
+        return view('products.edit', compact('categories', 'product', 'product_categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, string $id)
+    public function updateProduct(ProductRequest $request)
     {
-        $product = Product::find($id);
+        $product = Product::find($request['product_id']);
         if (!empty($product)) {
-            $request=$request->json()->all();
             // Update product attributes
             $product->name = $request["name"] ?? $product->name;
             $product->description = $request["description"] ?? $product->description;
@@ -124,13 +141,20 @@ class ProductController extends Controller
                 $product->categories()->sync($request["categories"]);
             }
             // Remove previous images and attach the new ones
-            // if ($request['images']){
-            //     $product->images()->delete();
-            //     foreach ($request['images'] as $image) {
-            //         $path = $image->store('product_images', 'public');
-            //         $product->images()->create(['path' => $path]);
-            //     }
-            // }
+            if ($request->hasFile('images')) {
+                foreach ($product->images as $stored_image) {
+                    File::delete(public_path('storage/', $stored_image->path));
+                    $stored_image->delete();
+                };
+                foreach ($request->file('images') as $image) {
+                    $originalExtension = $image->getClientOriginalExtension();
+                $image = Image::make($image)->resize('250', '250')->encode();
+                $filename = 'image_' . time() .'.'. $originalExtension; // Generate a unique filename
+                $imagePath = 'product_images/' . $filename;
+                Storage::disk('public')->put($imagePath, $image);
+                $product->images()->create(['path' => $imagePath]);
+                }
+            }
             $product->save();
             $response = response()->json(['message' => 'product updated successfully', 'product' => $product]);
         } else {

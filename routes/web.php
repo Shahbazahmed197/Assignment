@@ -42,7 +42,8 @@ Route::middleware('auth')->group(function () {
         return view('category.index');
     })->name('category');
     //create and edit routes for products and categories
-    Route::resource('products', ProductController::class)->except('index');
+    Route::resource('products', ProductController::class)->except('index','update');
+    Route::post('update-product', [ProductController::class,'updateProduct']);
     Route::resource('categories', CategoryController::class)->except('index');
     //Routes for data-tables
     Route::get('/product-data', [ProductController::class, 'products'])->name('products.data');

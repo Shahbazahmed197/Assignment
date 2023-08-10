@@ -22,17 +22,12 @@ Route::post('/login',[UserController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::resource('category',CategoryController::class);
-    Route::resource('product', ProductController::class);
+    Route::resource('category',CategoryController::class)->only('index');
+    Route::resource('product', ProductController::class)->only('index');
 });
 
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
-Route::middleware('auth')->post('/create-api-token', function (Request $request) {
-    $user = $request->user();
-    $token = $user->createToken('api-token')->plainTextToken;
-    return ['token' => $token];
 });

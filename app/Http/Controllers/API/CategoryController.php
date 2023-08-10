@@ -35,7 +35,12 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $categories = Category::latest()->paginate(10);
+        $query=Category::query();
+        $query->when($request->has('name'), function ($query) use ($request) {
+            return $query->where('name', 'like', '%' . $request->input('name') . '%');
+        });
+        $categories = $query->select('id','name','slug')
+        ->latest()->paginate(10);
         if (!$categories->isEmpty()) {
             $response = response()->json(["message" => "categories found", "categories" => $categories], 200);
         } else {
@@ -49,8 +54,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $categories = Category::get(['id', 'name']);
-        return view('category.create', compact('categories'));
+        return view('category.create');
     }
 
     /**
@@ -62,7 +66,7 @@ class CategoryController extends Controller
         try {
             $category = Category::create([
                 'name' => $request->input('name'),
-                'slug' => Str::slug($request->name),
+                'slug' => generateSlug($request->name),
             ]);
 
             return response()->json(["message" => "New category added", "category" => $category], 200);
