@@ -1,6 +1,10 @@
 @extends('layouts.front')
 @section('content')
   <div class="container">
+    <span>
+        <a class="btn btn-info"  href="{{ route('home') }}">
+             Back</a>
+    </span><br>
     <strong class="py-3"> Products</strong>
     <div class="row">
       @foreach($category->products as $product)

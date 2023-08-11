@@ -36,7 +36,6 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role'      =>'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -47,7 +46,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        $user->assignRole($request->input('role'));
+        $user->assignRole('user');
         // event(new Registered($user));
         // Auth::login($user);
         $adminUser = User::role('user')->first();

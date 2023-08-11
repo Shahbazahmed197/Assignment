@@ -20,7 +20,7 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col pt-4 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-@yield('content')
+            @yield('content')
         </div>
     </body>
 </html>

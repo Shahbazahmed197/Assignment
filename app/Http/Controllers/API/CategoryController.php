@@ -25,7 +25,7 @@ class CategoryController extends Controller
                 return $category->products()->count();
             })
             ->editColumn('created_at', function ($category) {
-                return Carbon::parse($category->created_at)->format('Y-m-d');
+                return Carbon::parse($category->created_at)->format('d-m-Y');
             })
             ->make(true);
     }
@@ -37,12 +37,12 @@ class CategoryController extends Controller
     {
         $query=Category::query();
         $query->when($request->has('name'), function ($query) use ($request) {
-            return $query->where('name', 'like', '%' . $request->input('name') . '%');
+            return $query->where('name', 'like', '%' . $request->name . '%');
         });
         $categories = $query->select('id','name','slug')
         ->latest()->paginate(10);
         if (!$categories->isEmpty()) {
-            $response = response()->json(["message" => "categories found", "categories" => $categories], 200);
+            $response = response()->json(["message" => count($categories)." "."categories found", "categories" => $categories], 200);
         } else {
             $response = response()->json(["message" => "No category found", "categories" => $categories], 200);
         }

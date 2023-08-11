@@ -10,8 +10,9 @@ const Toast = Swal.mixin({
     timerProgressBar: true
   })
 
-  //fucntion related to category
+  //fucntions related to category
 
+  //add category
         function submitcategoryForm() {
             var formData = new FormData(document.getElementById('categoryForm'));
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
