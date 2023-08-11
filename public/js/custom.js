@@ -215,7 +215,7 @@ const Toast = Swal.mixin({
             console.log(deleteUrl);
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'You will not be able to recover this category!',
+                text: 'You will not be able to recover this product!',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes, delete it!',

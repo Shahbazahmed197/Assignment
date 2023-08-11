@@ -8,7 +8,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="container my-4">
+                    <div class="p-4 my-4">
                         <div id="responseMessage"></div>
                         <form id="productupdateForm" enctype="multipart/form-data">
                             @csrf
@@ -23,7 +23,7 @@
                             </div>
 
                             <!-- Product Description -->
-                            <div class="form-group">
+                            <div class="form-group ">
                                 <label for="productDescription">Product Description</label>
                                 <textarea class="form-control" id="productDescription" name="description" rows="4" required>
                                     {{ $product->description }}
@@ -33,7 +33,8 @@
                             <!-- Product Categories (Multiple Select) -->
                             <div class="form-group">
                                 <label for="productCategories">Categories</label>
-                                <select class="form-control" id="productCategories" name="categories[]" multiple required>
+                                <select class="selectpicker form-control" data-live-search="true" id="productCategories"
+                                 name="categories[]" multiple required>
                                     @foreach ($categories as $category)
                                         <option @if (in_array($category->id, $product_categories)) selected @endif value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
@@ -62,4 +63,9 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+
 @endsection

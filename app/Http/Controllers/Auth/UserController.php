@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendAdminNotification;
 use App\Mail\NewUserRegistered;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class UserController extends Controller
         // event(new Registered($user));
         // Auth::login($user);
         $adminUser = User::role('user')->first();
-        Mail::to($adminUser->email)->queue(new NewUserRegistered($user));
+        SendAdminNotification::dispatch($user);
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json(['token' => $token,'message'=>"Registered Successfully"], 200);

@@ -5,30 +5,32 @@
 @endsection
 
 @section('content')
-<style>
-    .selected-options {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    .selected-option {
-        background-color: #f0f0f0;
-        padding: 4px 8px;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-    }
-    .remove-option {
-        margin-left: 4px;
-        cursor: pointer;
-    }
-</style>
+    <style>
+        .selected-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .selected-option {
+            background-color: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .remove-option {
+            margin-left: 4px;
+            cursor: pointer;
+        }
+    </style>
     <div class="py-12">
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="container my-4">
+                    <div class="p-4 my-4">
                         <div id="responseMessage"></div>
                         <form id="productForm" enctype="multipart/form-data">
                             @csrf
@@ -49,12 +51,13 @@
                             <div class="form-group">
                                 <label for="productCategories">Categories</label>
                                 <div class="form-control-select-multiple">
-                                <select class="custom-select select2" id="productCategories"
-                                 name="categories[]" multiple required>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
+
+                                    <select class="selectpicker form-control" data-live-search="true" id="productCategories"
+                                        name="categories[]" multiple required>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
@@ -74,4 +77,9 @@
             </div>
         </div>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/css/bootstrap-select.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 @endsection

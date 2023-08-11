@@ -66,6 +66,7 @@
                         {
                             data: null,
                             searchable: false,
+                            orderable:false,
                             render: function(data, type, full, meta) {
                                 var editUrl = "{{ route('categories.edit', ':id') }}".replace(':id',
                                     data
