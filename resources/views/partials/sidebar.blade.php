@@ -34,28 +34,4 @@
                         </div><!-- .nk-sidebar-menu -->
                     </div><!-- .nk-sidebar-content -->
                 </div><!-- .nk-sidebar-element -->
-                <div class="nk-sidebar-element nk-sidebar-body">
-                    <div class="nk-sidebar-content">
-                        <div class="nk-sidebar-menu" data-simplebar>
-                            <ul class="nk-menu">
-                                <li class="nk-menu-heading">
-                                    <h6 class="overline-title text-primary-alt"></h6>
-                                </li><!-- .nk-menu-item -->
-                                <li class="nk-menu-item">
-                                    <a href="html/crm/index.html" class="nk-menu-link">
-                                        <span class="nk-menu-icon"><em class="icon ni ni-user-list"></em></span>
-                                        <span class="nk-menu-text">Categoreis</span>
-                                    </a>
-                                </li><!-- .nk-menu-item -->
-                                <li class="nk-menu-item">
-                                    <a href="html/hotel/index.html" class="nk-menu-link">
-                                        <span class="nk-menu-icon"><em class="icon ni ni-building"></em></span>
-                                        <span class="nk-menu-text">Products</span>
-                                    </a>
-                                </li><!-- .nk-menu-item -->
-                            </ul><!-- .nk-menu -->
-                        </div><!-- .nk-sidebar-menu -->
-                    </div><!-- .nk-sidebar-content -->
-                </div><!-- .nk-sidebar-element -->
-
     </div>

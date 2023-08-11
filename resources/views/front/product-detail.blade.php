@@ -1,6 +1,10 @@
 @extends('layouts.front')
 @section('content')
     <div class="container">
+        <span>
+            <a class="btn btn-info"  href="{{ route('home') }}">
+                 Back</a>
+        </span><br>
         <div class="row">
             <div class="col-md-2 mb-4"></div>
             <div class="col-md-8 mb-4">
@@ -19,9 +23,9 @@
                         <div class="comment py-3">
                             <p>{{ $comment->content }}</p>
                             <small>{{ $comment->created_at->format('d M, Y') }}</small>
-                        </div>
+                        </div><hr>
                     @endforeach
-                    <h1 class="text-center">Add a Comment</h1>
+                    <h1 class="text-center pt-3">Add a Comment</h1>
                     <!-- Comment Form -->
                     <form action="{{ route('products.comment') }}" method="POST" class="mt-4">
                         @csrf

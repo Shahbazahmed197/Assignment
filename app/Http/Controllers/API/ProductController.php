@@ -31,7 +31,7 @@ class ProductController extends Controller
                 return implode(', ', $product->categories()->pluck('name')->toArray());
             })
             ->editColumn('created_at', function ($product) {
-                return Carbon::parse($product->created_at)->format('Y-m-d');
+                return Carbon::parse($product->created_at)->format('d-m-Y');
             })
             ->make(true);
     }
@@ -40,17 +40,18 @@ class ProductController extends Controller
     {
         $query = Product::query();
         $query->when($request->has('name'), function ($query) use ($request) {
-            return $query->where('name', 'like', '%' . $request->input('name') . '%');
+            return $query->where('name','Like','%'.$request->name .'%');
         });
         $products = $query
             ->select([
                 'id', 'name', 'slug', 'description',
-                DB::raw('DATE_FORMAT(created_at, "%d-%M-%Y") AS listed_on')
+                DB::raw('DATE_FORMAT(created_at,"%d-%M-%Y") AS listed_on')
             ])
             ->latest()
             ->paginate(10);
         if (!$products->isEmpty()) {
-            $response = response()->json(["message" => "products found", "products" => $products], 200);
+            $response = response()
+            ->json(["message" => count($products)." "."products found", "products" => $products], 200);
         } else {
             $response = response()->json(["message" => "No product found", "products" => $products], 200);
         }
