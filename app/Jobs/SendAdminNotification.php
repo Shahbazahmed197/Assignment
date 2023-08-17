@@ -30,7 +30,7 @@ class SendAdminNotification implements ShouldQueue
      */
     public function handle(): void
     {
-        $adminUser = User::role('user')->first();
+        $adminUser = User::role('admin')->first();
         Mail::to($adminUser->email)->send(new NewUserRegistered($this->user));
     }
 }

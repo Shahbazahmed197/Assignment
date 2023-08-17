@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Jobs\SendVerifyEmailNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,12 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function index(Request $request): View
+    {
+        return view('profile.index', [
+            'user' => $request->user(),
+        ]);
+    }
     /**
      * Display the user's profile form.
      */
@@ -30,11 +37,12 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+            SendVerifyEmailNotification::dispatch($request->user());
         }
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.index')->with('success', 'profile-updated');
     }
 
     /**

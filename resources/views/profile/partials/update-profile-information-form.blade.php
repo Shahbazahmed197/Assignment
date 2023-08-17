@@ -13,21 +13,23 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update',['profile'=>"me"]) }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        <div class="form-group">
+            <label class="form-label" for="name">Name</label>
+            <div class="form-control-wrap">
+                <input type="text" name="name" value="{{ $user->name }}" required  class="form-control form-control-lg" id="name" placeholder="Enter your name">
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
         </div>
-
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
-
+        <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <div class="form-control-wrap">
+                <input type="email" name="email" value={{ $user->email }} required class="form-control form-control-lg" id="email" placeholder="Enter your email address">
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
@@ -39,17 +41,26 @@
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                        <p class="mt-2 font-medium text-sm text-success text-green-600 dark:text-green-400">
                             {{ __('A new verification link has been sent to your email address.') }}
                         </p>
                     @endif
                 </div>
+                @else
+                <div>
+                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                        {{ __('Your email address is verified.') }}
+                    </p>
+                </div>
             @endif
+
+
         </div>
 
+        <div class="form-group">
+            <button type="submit" class="btn btn-lg btn-primary">Update Profile</button>
+        </div>
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
             @if (session('status') === 'profile-updated')
                 <p
                     x-data="{ show: true }"

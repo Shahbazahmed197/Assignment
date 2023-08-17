@@ -6,8 +6,6 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class NewUserRegistered extends Mailable
@@ -26,7 +24,8 @@ class NewUserRegistered extends Mailable
 
     public function build()
     {
-        return $this->subject('New User Registered')->view('emails.new_user_registered',['user'=>$this->user]);;
+
+        return $this->subject('New User Registered')->view('emails.new-user-registered',['user'=>$this->user]);;
     }
 
 }
