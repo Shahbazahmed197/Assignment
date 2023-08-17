@@ -10,7 +10,7 @@
     <meta name="description"
         content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" href="./images/favicon.png">
     <!-- Page Title  -->
     <title>@yield('title')</title>
     <!-- StyleSheets  -->
@@ -27,6 +27,9 @@
         .dataTables_paginate ul {
             float: right;
         }
+.dataTable{
+width:100%
+}
     </style>
 
 
@@ -46,19 +49,22 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalForm">
+    <div class="modal fade" tabindex="-1" id="modalForm">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modalContent">
 
+            </div>
+        </div>
     </div>
-
-
 
 
     <script src="{{ asset('js/theme.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     @stack('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
 

@@ -10,5 +10,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 class DashboradController extends Controller
 {
-
+public function dashboard(){
+return view('dashboard');
+}
 }

@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboradController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,18 +23,24 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/testingmail', function () {
+    return view('emails.verify-email');
+})->name('testingmail');
+
 // Front end Routes
 Route::get('/home', [FrontController::class, 'categories'])->name('home');
 Route::get('/category/{id}', [FrontController::class, 'categoryProducts'])->name('products');
 Route::get('/product/{id}', [FrontController::class, 'ProductDetail'])->name('product_detail');
-Route::Post('/product-comment', [FrontController::class, 'postProductComment'])->name('products.comment');
+Route::post('/product-comment', [FrontController::class, 'postProductComment'])->name('products.comment');
 
 //end front end routes
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
+    // Route::get('/dashboard', function () {
+    //     return view('dashboard');
+    // })->name('dashboard');
+    Route::get('/dashboard', [DashboradController::class,'dashboard'])->name('dashboard');
+
     // categories and products views
     Route::get('/product', function () {
         return view('products.index');
@@ -49,9 +56,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/product-data', [ProductController::class, 'products'])->name('products.data');
     Route::get('/category-data', [CategoryController::class, 'category'])->name('category.data');
     //Profile Routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('profile', ProfileController::class);
+    Route::resource('setting', SettingController::class);
+
+
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
