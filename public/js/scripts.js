@@ -125,7 +125,7 @@
 
   NioApp.PassSwitch = function () {
     NioApp.Passcode('.passcode-switch');
-  }; // Toastr Message @v1.0 
+  }; // Toastr Message @v1.0
 
 
   NioApp.Toast = function (msg, ttype, opt) {
@@ -133,7 +133,7 @@
         msi = '',
         ticon = ttype === 'info' ? 'ni ni-info-fill' : ttype === 'success' ? 'ni ni-check-circle-fill' : ttype === 'error' ? 'ni ni-cross-circle-fill' : ttype === 'warning' ? 'ni ni-alert-fill' : '',
         def = {
-      position: 'bottom-right',
+      position: 'top-right',
       ui: '',
       icon: 'auto',
       clear: false
@@ -153,7 +153,7 @@
         "closeButton": true,
         "debug": false,
         "newestOnTop": false,
-        "progressBar": false,
+        "progressBar": true,
         "positionClass": attr.position + attr.ui,
         "closeHtml": '<span class="btn-trigger">Close</span>',
         "preventDuplicates": true,
@@ -448,9 +448,15 @@
 
 
   NioApp.Dropzone.init = function () {
-    NioApp.Dropzone('.upload-zone', {
-      url: "/images"
-    });
+   var myDropzone= NioApp.Dropzone('.upload-zone', {
+        url: 'images/upload',
+        autoProcessQueue: false, // Disable automatic upload
+        addRemoveLinks: true,
+        maxFiles: 1,
+        headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+      });
   }; // Wizard @v1.0
 
 

@@ -2,18 +2,16 @@
 
 namespace App\Http\Requests\Web;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class RegisterRequest extends FormRequest
+class AddCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -24,9 +22,9 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string', 'max:255'],
-            'email' => ['required','email', 'max:255', Rule::unique(User::class)],
-            'password' => 'required|string|min:8',
+            'comment' => 'required|string|max:255',
+            'rating' => 'required|numeric|between:1,5',
+            'product_id' => 'required|exists:products,id',
         ];
     }
 }

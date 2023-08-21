@@ -19,13 +19,13 @@
                                     <h6 class="overline-title text-primary-alt"></h6>
                                 </li><!-- .nk-menu-item -->
                                 <li class="nk-menu-item">
-                                    <a href="{{ route('category') }}" class="nk-menu-link">
+                                    <a href="{{ route('categories.index') }}" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-tags"></em></span>
                                         <span class="nk-menu-text">Categories</span>
                                     </a>
                                 </li><!-- .nk-menu-item -->
                                 <li class="nk-menu-item">
-                                    <a href="{{ route('product')}}" class="nk-menu-link">
+                                    <a href="{{ route('products.index')}}" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-cart"></em></span>
                                         <span class="nk-menu-text">Products</span>
                                     </a>

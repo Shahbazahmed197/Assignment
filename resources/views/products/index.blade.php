@@ -44,6 +44,7 @@
         <script>
             $(document).ready(function() {
                 $('#products-table').DataTable({
+                    processing: true,
                     serverSide: true,
                     ajax: "{{ route('products.data') }}",
                     columns: [{
@@ -83,10 +84,26 @@
 
             });
                // To Open Add Product Form
+               var base64Images = [];
                $(document).on('click', '#add_product_btn', function (){
                 axios.get("{{ route('products.create') }}").then(function(response) {
                     $('#modalForm').html(response.data)
                 $('#modalForm').modal('show');
+                NioApp.Select2('.form-select', {
+                    placeholder: "Select Categories",
+                });
+                $('.select2-search__field').width('100%')
+                NioApp.Dropzone('.upload-zone', {
+                url: "{{ route('images.upload') }}",
+                paramName: "images[]",
+                autoProcessQueue: false,
+                addRemoveLinks: true,
+                headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+                });
+
             }).catch(function (error){
 
             })
@@ -107,6 +124,19 @@
                 axios.get("{{ route('products.edit', ['product' => ':id']) }}".replace(':id', id)).then(function(response) {
                  $('#modalForm').html(response.data)
                 $('#modalForm').modal('show');
+                NioApp.Select2('.form-select', {
+                    placeholder: "Select Categories",
+                });
+                NioApp.Dropzone('.upload-zone', {
+                url: "{{ route('images.upload') }}",
+                paramName: "images[]",
+                addRemoveLinks: true,
+                autoProcessQueue: false,
+                headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+                });
+                $('.select2-search__field').width('100%')
             }).catch(function (error){
 
             })

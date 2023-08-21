@@ -38,7 +38,6 @@
                                     </div>
                                     <div class="form-control-wrap">
                                         <input name="email" type="email" value="{{ old('email') }}" class="form-control form-control-lg" id="default-01" placeholder="Enter your email address">
-                                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -30,7 +30,7 @@
                                         <div class="nk-block-head-content">
                                             <h5 class="nk-block-title">Sign-In</h5>
                                             <div class="nk-block-des">
-                                                <p>Access the DashLite panel using your email and passcode.</p>
+                                                <p>Access the DashLite panel using your email and Password.</p>
                                             </div>
                                         </div>
                                     </div><!-- .nk-block-head -->
@@ -44,7 +44,6 @@
                                                 <input autocomplete="off" name="email" value="{{ old('name') }}" required
                                                     autofocus type="text" class="form-control form-control-lg" required
                                                     id="email-address" placeholder="Enter your email address">
-                                                <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
 
                                             </div>
                                         </div><!-- .form-group -->
@@ -63,11 +62,10 @@
                                                 <input autocomplete="new-password" name="password" type="password"
                                                     class="form-control form-control-lg" required id="password"
                                                     placeholder="Enter your passcode">
-                                                    <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
                                             </div>
                                         </div><!-- .form-group -->
                                         <div class="form-group">
-                                            <button class="btn btn-lg btn-primary btn-block">Sign in</button>
+                                            <button class="btn btn-lg btn-primary btn-block" id="login-btn">Sign in</button>
                                         </div>
                                     </form><!-- form -->
 

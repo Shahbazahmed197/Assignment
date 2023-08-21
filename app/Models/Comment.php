@@ -11,10 +11,15 @@ class Comment extends Model
     protected $fillable = [
         'content',
         'rating',
-        'product_id'
+        'product_id',
+        'user_id'
     ];
     public function product()
     {
         return $this->belongsTo(Comment::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

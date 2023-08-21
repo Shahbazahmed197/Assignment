@@ -35,15 +35,13 @@
                                     <div class="form-group">
                                         <label class="form-label" for="name">Name</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" name="name" value="{{ old('name') }}" required  class="form-control form-control-lg" id="name" placeholder="Enter your name">
-                                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                                            <input type="text" name="name" value="{{ old('name') }}"   class="form-control form-control-lg" id="name" placeholder="Enter your name">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="email">Email</label>
                                         <div class="form-control-wrap">
-                                            <input type="email" name="email" value="{{ old('email') }}" required class="form-control form-control-lg" id="email" placeholder="Enter your email address">
-                                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                            <input type="email" name="email" value="{{ old('email') }}"  class="form-control form-control-lg" id="email" placeholder="Enter your email address">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -54,12 +52,11 @@
                                                 <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                             </a>
                                             <input type="password" required name="password" class="form-control form-control-lg" id="password" placeholder="Enter your passcode">
-                                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-control-xs custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="checkbox">
+                                            <input type="checkbox" required name="agree" class="custom-control-input" id="checkbox">
                                             <label class="custom-control-label" for="checkbox">I agree to Dashlite <a tabindex="-1" href="#">Privacy Policy</a> &amp; <a tabindex="-1" href="#"> Terms.</a></label>
                                         </div>
                                     </div>
