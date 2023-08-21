@@ -34,11 +34,11 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|unique:users',
+        //     'password' => 'required|string|min:8',
+        // ]);
 
         $user = User::create([
             'name' => $request->name,
@@ -47,6 +47,7 @@ class RegisteredUserController extends Controller
         ]);
 
         // event(new Registered($user));
+        $user->assignRole('user');
         SendVerifyEmailNotification::dispatch($user);
         SendAdminNotification::dispatch($user);
         Auth::login($user);

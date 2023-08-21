@@ -2,7 +2,7 @@
 @section('content')
   <div class="container">
     <span>
-        <a class="btn btn-info"  href="{{ route('home') }}">
+        <a class="btn btn-info"  href="{{ route('web-category.index') }}">
              Back</a>
     </span><br>
     <strong class="py-3"> Products</strong>
@@ -13,7 +13,7 @@
             <div class="card-body">
                 <img width="100px" height="100px" src="{{ asset('storage/'.$product->images[0]->path) }}" alt="">
               <h5 class="card-title">{{ $product->name }}</h5>
-              <a href="{{ route('product_detail',$product->id) }}" class="btn btn-primary">View Detail</a>
+              <a href="{{ route('web-product.show',$product->id) }}" class="btn btn-primary">View Detail</a>
             </div>
           </div>
         </div>

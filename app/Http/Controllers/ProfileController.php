@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Jobs\SendVerifyEmailNotification;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,8 +32,21 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
+        // Determine the type of update based on the input fields present
+        if ($request->has('profile_image')) {
+            // // Update profile image
+            // $request->validate([
+            //     'profile_image' => 'required',
+            // ]);
+            // $user=User::find(auth()->user()->id);
+
+            // Process and update profile image
+            // ...
+            // Redirect with success message
+            return response()->json(['success'=>true,'message' => 'profile image updated', 'data' => ""]);
+        }
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {

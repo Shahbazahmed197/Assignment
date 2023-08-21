@@ -7,6 +7,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +15,10 @@ use Yajra\DataTables\Facades\DataTables;
 use Intervention\Image\ImageManagerStatic as Image;
 class ProductController extends Controller
 {
+
+    public function index(){
+        return view('products.index');
+    }
  /**
      * Display a data-table of the resource.
      */
@@ -44,6 +49,7 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
+
         // create logic for product
         $product = Product::create([
             'name' => $request->name,
@@ -66,6 +72,25 @@ class ProductController extends Controller
                 $product->images()->create(['path' => $imagePath]);
             }
         }
+        foreach ($request->images as $imageDataUrl) {
+            if (preg_match('/^data:image\/(\w+);base64,/', $imageDataUrl)) {
+            // Extract image type and data from the data URL
+            list($type, $data) = explode(';', $imageDataUrl);
+            list(, $data) = explode(',', $data);
+            $data = base64_decode($data);
+
+            // Generate a unique filename
+            $filename = time() . '_' . Str::random(10) . '.png';
+
+            // Save the image to storage
+            Storage::disk('public')->put('images/' . $filename, $data);
+
+            // You can also resize the image using Intervention Image
+            $image = Image::make($data);
+            $image->resize(250, 250)->save(public_path('storage/product_images/' . $filename));
+            $product->images()->create(['path' => 'product_images/' . $filename]);
+        }
+    }
 
         return response()->json(['message' => 'Product created successfully', 'product' => $product], 200);
     }
@@ -97,7 +122,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateProduct(ProductRequest $request)
+    public function update(ProductRequest $request)
     {
         $product = Product::find($request['product_id']);
         if (!empty($product)) {
@@ -108,8 +133,8 @@ class ProductController extends Controller
 
 
             // Remove previous categories and sync the new ones
-            if (isset($request["categories"])) {
-                $product->categories()->sync($request["categories"]);
+            if (isset($request["categories[]"])) {
+                $product->categories()->sync($request["categories[]"]);
             }
             // Remove previous images and attach the new ones
             if ($request->hasFile('images')) {
@@ -148,5 +173,19 @@ class ProductController extends Controller
             $response = response()->json(['message' => 'No product found', 'product' => $product]);
         }
         return $response;
+    }
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('images[]')) {
+            $image = $request->file('images[]');
+            $originalExtension = $image->getClientOriginalExtension();
+            $image = Image::make($image)->resize('250', '250')->encode();
+            $filename = 'image_' . time() .'.'. $originalExtension; // Generate a unique filename
+            $imagePath = 'product_images/' . $filename;
+            Storage::disk('public')->put($imagePath, $image);
+            // You can save the file information to the database if needed
+        }
+
+        return response()->json(['message' => 'Image uploaded successfully.']);
     }
 }

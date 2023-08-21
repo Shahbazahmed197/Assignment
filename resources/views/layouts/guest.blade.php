@@ -17,5 +17,21 @@
         @yield('content')
         <script src="{{ asset('js/bundle.js') }}"></script>
         <script src="{{ asset('js/scripts.js') }}"></script>
+        <script src="{{ asset('js/custom.js') }}"></script>
     </body>
+    @if(isset($errors))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        NioApp.Toast('{{ $errors->first() }}', 'error');
+    });
+</script>
+@endif
+@if(session('status'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var successMessage = @json(session('status'));
+            NioApp.Toast(successMessage, 'success');
+        });
+    </script>
+    @endif
 </html>

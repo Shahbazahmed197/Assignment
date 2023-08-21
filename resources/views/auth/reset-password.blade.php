@@ -29,8 +29,7 @@
                                         <div class="nk-block-head-content">
                                             <h5 class="nk-block-title">Reset password</h5>
                                             <div class="nk-block-des">
-                                                <p>If you forgot your password, well, then we’ll email you instructions to reset
-                                                    your password.</p>
+                                                <p>You can set your new password that you want.</p>
                                             </div>
                                         </div>
                                     </div><!-- .nk-block-head -->
@@ -49,7 +48,6 @@
                                                 <input type="email" name="email" value="{{ old('email', $request->email) }}"
                                                     required class="form-control form-control-lg" id="default-01"
                                                     placeholder="Enter your email address">
-                                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                             </div>
                                         </div>
                                         <!-- Password -->
@@ -64,7 +62,6 @@
                                                 <input type="password" required name="password"
                                                     class="form-control form-control-lg" id="password"
                                                     placeholder="Enter your passcode">
-                                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                             </div>
                                         </div>
                                         <!-- Confirm Password -->
@@ -72,14 +69,13 @@
                                             <label class="form-label" for="password_confirmation">Confirm Password</label>
                                             <div class="form-control-wrap">
                                                 <a tabindex="-1" href="#"
-                                                    class="form-icon form-icon-right passcode-switch lg" data-target="password">
+                                                    class="form-icon form-icon-right passcode-switch lg" data-target="password_confirmation">
                                                     <em class="passcode-icon icon-show icon ni ni-eye"></em>
                                                     <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                                 </a>
                                                 <input type="password" required name="password_confirmation"
                                                     class="form-control form-control-lg" id="password_confirmation"
                                                     placeholder="Enter password again">
-                                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
 
                                             </div>
                                         </div>

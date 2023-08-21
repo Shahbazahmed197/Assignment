@@ -6,25 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AddCategoryRequest;
 use App\Models\Category;
 use Carbon\Carbon;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
-    public function category(Request $request)
-    {
-        $category = Category::with('products')->select(['id', 'name', 'created_at']);
-
-        return DataTables::of($category)
-            ->addColumn('number_of_products', function ($category) {
-                return $category->products()->count();
-            })
-            ->editColumn('created_at', function ($category) {
-                return Carbon::parse($category->created_at)->format('d-m-Y');
-            })
-            ->make(true);
+    public function index(){
+        return view('category.index');
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -95,13 +87,29 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $category = Category::find($id);
+        if ($category->products()->count() > 0) {
+            return response()->json(['success'=>false,'message' => 'Cannot delete category with associated products', 'data' => $category],Response::HTTP_CONFLICT);
+        }
         if (!empty($category)) {
             // delete category
             $category->delete();
-            $response = response()->json(['message' => 'Category deleted successfully', 'category' => $category]);
+            $response = response()->json(['success'=>true,'message' => 'Category deleted successfully', 'data' => $category]);
         } else {
-            $response = response()->json(['message' => 'No category found', 'category' => $category]);
+            $response = response()->json(['success'=>false,'message' => 'No category found', 'data' => $category],Response::HTTP_CONFLICT);
         }
         return $response;
+    }
+    public function category(Request $request)
+    {
+        $category = Category::with('products')->select(['id', 'name', 'created_at']);
+
+        return DataTables::of($category)
+            ->addColumn('number_of_products', function ($category) {
+                return $category->products()->count();
+            })
+            ->editColumn('created_at', function ($category) {
+                return Carbon::parse($category->created_at)->format('d-m-Y');
+            })
+            ->make(true);
     }
 }

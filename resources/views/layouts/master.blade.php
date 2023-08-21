@@ -16,8 +16,7 @@
     <!-- StyleSheets  -->
     <link id="skin-default" rel="stylesheet" href="{{ asset('css/theme.css') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('css/dashlite.css') }}">
-
-      <style>
+        <style>
 
         .dataTables_filter{
             padding-bottom:20px;
@@ -50,17 +49,14 @@ width:100%
     </div>
 
     <div class="modal fade" tabindex="-1" id="modalForm">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" id="modalContent">
-
-            </div>
-        </div>
     </div>
 
 
     <script src="{{ asset('js/theme.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

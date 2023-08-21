@@ -14,18 +14,14 @@
                         <a class="btn btn-icon btn-trigger mr-n2" data-toggle="dropdown" href="#"><em class="icon ni ni-more-v"></em></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <ul class="link-list-opt no-bdr">
-                                <li><a href="#"><em class="icon ni ni-edit-fill"></em><span>Update Profile</span></a></li>
+                                <li data-toggle="modal" data-target="#profile-edit"><a ><em class="icon ni ni-camera-fill"></em><span>Change Photo</span></a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div><!-- .user-card -->
         </div><!-- .card-inner -->
-        <div class="card-inner">
-            <div class="user-account-info py-0">
-                <h6 class="overline-title-alt">Nio Wallet Account</h6>
-                 </div>
-        </div><!-- .card-inner -->
+
         <div class="card-inner p-0">
             <ul class="link-list-menu">
                 <li><a class="{{ Route::is('profile.index') ? 'active' : '' }}" href="{{ route('profile.index') }}"><em class="icon ni ni-user-fill-c"></em><span>Personal Infomation</span></a></li>
@@ -34,3 +30,14 @@
         </div><!-- .card-inner -->
     </div><!-- .card-inner-group -->
 </div><!-- card-aside -->
+<div class="modal fade" role="dialog" id="change-photo">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <a href="#" class="close" data-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+            <div class="modal-body modal-body-lg">
+                <h5 class="title">Update Profile</h5>
+             @include('profile.partials.update-profile-information-form')
+            </div><!-- .modal-body -->
+        </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+</div><!-- .modal -->
