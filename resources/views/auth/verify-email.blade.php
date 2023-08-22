@@ -27,7 +27,7 @@
                                 <div class="nk-block-head-content">
                                     <h5 class="nk-block-title">Verify Email</h5>
                                     <div class="nk-block-des">
-                                        <p>Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.</p>
+                                        <p>Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.</p>
                                     </div>
                                 </div>
                             </div><!-- .nk-block-head -->

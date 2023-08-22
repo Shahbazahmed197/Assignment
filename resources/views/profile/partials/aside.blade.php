@@ -6,15 +6,15 @@
                     <span>AB</span>
                 </div>
                 <div class="user-info">
-                    <span class="lead-text">{{ $user->name }}</span>
-                    <span class="sub-text">{{ $user->email }}</span>
+                    <span class="lead-text user-name">{{ $user->name }}</span>
+                    <span class="sub-text user-email">{{ $user->email }}</span>
                 </div>
                 <div class="user-action">
                     <div class="dropdown">
                         <a class="btn btn-icon btn-trigger mr-n2" data-toggle="dropdown" href="#"><em class="icon ni ni-more-v"></em></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <ul class="link-list-opt no-bdr">
-                                <li data-toggle="modal" data-target="#profile-edit"><a ><em class="icon ni ni-camera-fill"></em><span>Change Photo</span></a></li>
+                                <li data-toggle="modal" data-target="#change-photo"><a ><em class="icon ni ni-camera-fill"></em><span>Change Photo</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
             <a href="#" class="close" data-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
             <div class="modal-body modal-body-lg">
                 <h5 class="title">Update Profile</h5>
-             @include('profile.partials.update-profile-information-form')
+             @include('profile.partials.change-photo-form')
             </div><!-- .modal-body -->
         </div><!-- .modal-content -->
     </div><!-- .modal-dialog -->
