@@ -1,10 +1,6 @@
 @extends('layouts.front')
 @section('content')
-  <div class="container">
-    <span>
-        <a class="btn btn-info"  href="{{ route('web-category.index') }}">
-             Back</a>
-    </span><br>
+<div class="container mt-5">
     <strong class="py-3"> Products</strong>
     <div class="row">
       @foreach($category->products as $product)

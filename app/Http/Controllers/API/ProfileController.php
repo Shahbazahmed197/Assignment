@@ -4,23 +4,25 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ProfileDeleteRequest;
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\Auth\UpdateProfileImageRequest;
+use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Jobs\SendVerifyEmailNotification;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
     public function show()
     {
-        $user = auth('sanctum')->user();
+        $user = User::select('id', 'name', 'email','profile_image')->find(auth('sanctum')->user()->id);
         return response()->json(['message' => 'Profile data found', "success" => true, 'data' => $user]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request)
+    public function update(UpdateProfileRequest $request)
     {
         $request->user()->fill($request->validated());
 
@@ -33,7 +35,15 @@ class ProfileController extends Controller
 
         return response()->json(['message' => 'Profile Updated Successfully', "success" => true, 'data' => $request->user()]);
     }
-
+    public function updateProfilePicture(UpdateProfileImageRequest $request)
+    {
+        $image = $request->file('image');
+        $filePath = $image->store('profile_images', 'public');
+          $user=User::find(auth()->user()->id);
+            $user->profile_image=$filePath;
+            $user->save();
+            return response()->json(['success'=>true,'message'=>'Profile Image Updated','filePath' => $filePath]);
+    }
     /**
      * Delete the user's account.
      */

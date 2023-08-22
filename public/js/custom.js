@@ -126,6 +126,7 @@ const submitBtn=$('.submit-btn');
         }
 
         // add new product
+
         function createProductForm() {
             var submitBtn = $('.submit-btn');
             submitBtn.prop('disabled', true);
@@ -142,8 +143,6 @@ const submitBtn=$('.submit-btn');
                 }
                 formData.append('images[]', src);
             });
-
-            // Include imageSrcList array in the form data
             // Send AJAX request to the controller
             $.ajax({
                 url: '/products',
@@ -181,19 +180,28 @@ const submitBtn=$('.submit-btn');
             var submitBtn = $('.submit-btn');
             submitBtn.prop('disabled', true);
             submitBtn.html(loader);
-             var formData = new FormData(document.getElementById('productupdateForm'));
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
-            var formDataObject = {};
-    formData.forEach(function(value, key) {
-        formDataObject[key] = value;
-    });
+            // var formData = new FormData(document.getElementById('productupdateForm'));
+            // let formData = $("#productupdateForm").serialize();
+            let formData = new FormData($("#productupdateForm")[0]);
+            formData.append('_method', 'PUT');
+            var imageSrcList = []; // Array to hold the image src attributes
+
+            // Iterate through image previews and extract src attributes
+            $('.dz-preview .dz-image img').each(function() {
+                var src = $(this).attr('src');
+                if (src) {
+                    imageSrcList.push(src);
+                }
+                formData.append('images[]', src);
+            });
             $.ajax({
                 url: '/products/'+id,
-                type: 'PUT',
-                data: JSON.stringify(formDataObject),
+                type: 'POST',
+                data: formData,
+                contentType: false,
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
-                    'Content-Type': 'application/json',
                 },
                 processData: false,
                 success: function(response) {
@@ -252,6 +260,29 @@ const submitBtn=$('.submit-btn');
         });
         });
 
+        //remove product image
+        $(document).on('click', '.dz-remove', function () {
+            var $imageContainer = $(this).closest('.dz-preview'); // Find the closest parent div
+            var imagePath = $imageContainer.find('img').attr('src'); // Get the image path
+            var imageId=$imageContainer.find('img').attr('id');
+            // Send an AJAX request to remove the image from the server
+             // Send an AJAX request to remove the image from the server
+            axios.delete("/images/remove", {
+                params: {
+                    imageId: imageId,
+                    imagePath: imagePath
+                }
+            })
+            .then(function(response) {
+                console.log(response);
+                $imageContainer.remove(); // Remove the parent div
+                NioApp.Toast(response.data.message, 'success');
+
+            })
+            .catch(function(error) {
+                NioApp.Toast("Error removing image", 'error');
+            });
+        });
 
         //add comment
         function submitcommentForm() {
@@ -339,6 +370,7 @@ $(document).ready(function() {
             success: function(response) {
                 submitBtn.html('Change Password');
                 $('input[type="password"]').val('');
+                submitBtn.prop('disabled', false);
                 $('#change-password-modal').modal('hide');
                 NioApp.Toast(response.message, 'success');
             },
@@ -351,3 +383,38 @@ $(document).ready(function() {
         });
     });
 });
+
+
+//profile image
+    // Listen for the submit button click event
+
+    $('#change-profile-image').on('click', function() {
+        let formData = new FormData($("#profileImageForm")[0]);
+        var submitBtn = $('#change-profile-image');
+        submitBtn.prop('disabled', true);
+        submitBtn.html(loader);
+        $.ajax({
+            url: "/profile-picture",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log(response);
+                $('input[type="file"]').val('');
+                $('#change-photo').modal('hide');
+                submitBtn.prop('disabled', false);
+                submitBtn.html('Upload');
+                NioApp.Toast(response.message, 'success');
+                $(".user-avatar").html(
+                    '<img src="' + response.filePath + '" alt="profile picture">'
+                );
+                // $("#result").text("File saved at: " + response.filePath);
+            },
+            error: function(xhr, status, error, response) {
+                submitBtn.prop('disabled', false);
+                submitBtn.html('Upload');
+                NioApp.Toast(xhr.responseJSON.message, 'error');
+            }
+        });
+    });

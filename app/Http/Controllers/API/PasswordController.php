@@ -15,14 +15,14 @@ class PasswordController extends Controller
     {
         $user = auth('sanctum')->user();
         if (!Hash::check($request['current_password'], $user->password)) {
-            return response()->json(['message' => 'Current password is incorrect', "success"=>false], 422);
+            return response()->json(['message' => 'Current password is incorrect', 'success'=>false,'data'=>(object)[],], 422);
         }
 
         $request->user()->update([
             'password' => Hash::make($request['password']),
         ]);
 
-        return response()->json(["message" => "Password updated successfully", "success"=>true], 200);
+        return response()->json(["message" => "Password updated successfully", "success"=>true,"data"=>(object)[],], 200);
 
     }
     public function forgotPassword(Request $request)
@@ -38,9 +38,9 @@ class PasswordController extends Controller
             $request->only('email')
         );
         if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => 'Password reset link sent', "success"=>true]);
+            return response()->json(['message' => 'Password reset link sent', "success"=>true,"data"=>(object)[],],200);
         } else {
-            return response()->json(['message' => 'Failed to send reset link', "success"=>false], 422);
+            return response()->json(['message' => 'Failed to send reset link', "success"=>false, "data"=>(object)[],], 422);
         }
     }
 }

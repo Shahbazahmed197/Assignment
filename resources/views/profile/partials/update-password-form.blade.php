@@ -5,7 +5,7 @@
         @method('put')
         <!--Current Password -->
         <div class="form-group">
-            <label class="form-label" for="current_password">Current Password</label>
+            <label class="form-label" for="current_password"> Password</label>
             <div class="form-control-wrap">
                 <a tabindex="-1" href="#" class="form-icon form-icon-right passcode-switch lg"
                     data-target="password">

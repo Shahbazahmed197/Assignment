@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(RegisterRequest $request): RedirectResponse
+    public function store(RegisterRequest $request)
     {
         // $request->validate([
         //     'name' => 'required|string|max:255',
@@ -50,10 +50,7 @@ class RegisteredUserController extends Controller
         $user->assignRole('user');
         SendVerifyEmailNotification::dispatch($user);
         SendAdminNotification::dispatch($user);
-        Auth::login($user);
-
-        // $token = $user->createToken('authToken')->plainTextToken;
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Auth::login($user);
+        return redirect(route('verification.notice'))->with('status','Check your mail to verify');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Web;
 
 use App\Models\User;
+use App\Rules\AgreedToPolicies;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,7 +27,8 @@ class RegisterRequest extends FormRequest
         return [
             'name' => ['required','string', 'max:255'],
             'email' => ['required','email', 'max:255', Rule::unique(User::class)],
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
+            'agreed_to_policies' => 'required',
         ];
     }
 }

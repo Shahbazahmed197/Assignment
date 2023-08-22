@@ -19,6 +19,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const DASHBOARD = '/dashboard';
     public const HOME = '/web-category';
+    public const VERIFICATION = '/verify-email';
+
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

@@ -1,70 +1,30 @@
-<form method="post" enctype="multipart/form-data" class="mt-6 space-y-6">
-    @csrf
-    @method('patch')
-
-    <div class="upload-zone" data-accepted-files="image/*">
-
-        <div class="dz-message" data-dz-message>
-            <span class="dz-message-text">Drag and drop file</span>
-            <span class="dz-message-or">or</span>
-            <button type="button" class="btn btn-primary">SELECT</button>
-        </div>
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="imageModelLabel">Upload Image</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-
-    <div class="form-group">
-        <button type="submit" id="change-profile-image" class="btn btn-lg btn-primary">Submit</button>
+    <div class="modal-body">
+        <!-- Dropzone for multiple image uploads -->
+        <form action="{{ route('picture.update') }}" enctype="multipart/form-data" method="POST" id="profileImageForm">
+            @csrf
+            <div class="form-group">
+                <label for="profileImage">Profile Image</label>
+                <input type="file" class="form-control" id="productName" name="image" required
+                    placeholder="upload file">
+            </div>
+        </form>
     </div>
-    <div class="flex items-center gap-4">
-        @if (session('status') === 'profile-updated')
-            <p
-                x-data="{ show: true }"
-                x-show="show"
-                x-transition
-                x-init="setTimeout(() => show = false, 2000)"
-                class="text-sm text-gray-600 dark:text-gray-400"
-            >{{ __('Saved.') }}</p>
-        @endif
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="change-profile-image" type="button" class="btn btn-primary">Upload
+        </button>
     </div>
-</form>
-<script>
-   // Listen for the submit button click event
-   $('#change-profile-image').on('click', function() {
-        // Manually process the Dropzone queue
-        myDropzone.processQueue();
-        console.log("addedgile",myDropzone);
-    });
-    // Listen for the queuecomplete event (all files uploaded)
-    myDropzone.on('queuecomplete', function() {
-        // Get the added file
-        var addedFile = myDropzone.files[0];
-        console.log("addedgile",addedFile);
-        // Create a FormData object and append the file to it
-        var formData = new FormData();
-        formData.append('profile_image', addedFile);
+</div><!-- .modal-content -->
+@push('scripts')
+    <script>
+        // Listen for the submit button click event
 
-        // Send the AJAX request
-        $.ajax({
-            method: 'POST',
-            url: '{{ route('profile.update', ['profile' => 'me']) }}',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response.success) {
-                    console.log(123);
-                    // Update the image on success
-                    // You might need to adjust the image URL based on your data
-                    // var newImageUrl = response.image_url;
-                    // document.getElementById('profileImage').src = newImageUrl;
-                } else {
-                    // Handle error case
-                    console.error('Image update failed.');
-                }
-            },
-            error: function(xhr, status, error) {
-                // Handle AJAX error
-                console.error('AJAX request error:', error);
-            }
-        });
-    });
-</script>
+    </script>
+@endpush
