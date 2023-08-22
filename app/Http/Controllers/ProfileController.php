@@ -32,7 +32,7 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(Request $request)
+    public function update(ProfileUpdateRequest $request)
     {
         // Determine the type of update based on the input fields present
         if ($request->has('profile_image')) {
@@ -46,17 +46,21 @@ class ProfileController extends Controller
             // ...
             // Redirect with success message
             return response()->json(['success'=>true,'message' => 'profile image updated', 'data' => ""]);
+        }else{
+            $emailVerified=true;
+            $request->user()->fill($request->validated());
+
+            if ($request->user()->isDirty('email')) {
+                $request->user()->email_verified_at = null;
+                $emailVerified=false;
+                SendVerifyEmailNotification::dispatch($request->user());
+            }
+
+            $request->user()->save();
+
+             return response()->json(["success"=>true,"message"=>"profile updated","data"=>['user'=>$request->validated(),
+             'verified'=>$emailVerified]]);
         }
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-            SendVerifyEmailNotification::dispatch($request->user());
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.index')->with('success', 'profile-updated');
     }
 
     /**

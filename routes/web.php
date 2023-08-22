@@ -31,7 +31,7 @@ Route::resource('web-category', WebCategoryController::class)->only(['index','sh
 Route::resource('web-product', WebProductController::class)->only('show');
 Route::resource('comment', CommentController::class)->only('store')->middleware('auth');
 
-Route::middleware(['role:admin'])->group(function () {
+Route::middleware(['verified','role:admin'])->group(function () {
     Route::get('/dashboard', [DashboradController::class,'dashboard'])->name('dashboard');
 
     //CRUD routes for products and categories
@@ -48,7 +48,7 @@ Route::middleware(['role:admin'])->group(function () {
 });
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    //  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 require __DIR__ . '/auth.php';
