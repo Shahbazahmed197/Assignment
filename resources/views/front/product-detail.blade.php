@@ -1,10 +1,6 @@
 @extends('layouts.front')
 @section('content')
-    <div class="container">
-        <span>
-            <a class="btn btn-info" href="{{ route('web-category.index') }}">
-                Back</a>
-        </span><br>
+<div class="container mt-5">
         <div class="row">
             <div class="col-md-2 mb-4"></div>
             <div class="col-md-8 mb-4">

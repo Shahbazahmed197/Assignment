@@ -129,7 +129,7 @@
                 });
                 NioApp.Dropzone('.upload-zone', {
                 url: "{{ route('images.upload') }}",
-                paramName: "images[]",
+                paramName: "images",
                 addRemoveLinks: true,
                 autoProcessQueue: false,
                 headers: {

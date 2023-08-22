@@ -26,24 +26,27 @@
                                     <div class="nk-block-head-content">
                                         <h5 class="nk-block-title">Register</h5>
                                         <div class="nk-block-des">
-                                            <p>Create New Dashlite Account</p>
+                                            <p>Create New Account</p>
                                         </div>
                                     </div>
                                 </div><!-- .nk-block-head -->
                                 <form method="POST" action="{{ route('register') }}">
                                     @csrf
+                                     <!--  Name -->
                                     <div class="form-group">
                                         <label class="form-label" for="name">Name</label>
                                         <div class="form-control-wrap">
                                             <input type="text" name="name" value="{{ old('name') }}"   class="form-control form-control-lg" id="name" placeholder="Enter your name">
                                         </div>
                                     </div>
+                                     <!--  Email -->
                                     <div class="form-group">
                                         <label class="form-label" for="email">Email</label>
                                         <div class="form-control-wrap">
                                             <input type="email" name="email" value="{{ old('email') }}"  class="form-control form-control-lg" id="email" placeholder="Enter your email address">
                                         </div>
                                     </div>
+                                    <!--  Password -->
                                     <div class="form-group">
                                         <label class="form-label" for="password">Password</label>
                                         <div class="form-control-wrap">
@@ -54,10 +57,25 @@
                                             <input type="password" required name="password" class="form-control form-control-lg" id="password" placeholder="Enter your passcode">
                                         </div>
                                     </div>
+                                    <!-- Confirm Password -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="password_confirmation">Confirm Password</label>
+                                        <div class="form-control-wrap">
+                                            <a tabindex="-1" href="#"
+                                                class="form-icon form-icon-right passcode-switch lg" data-target="password_confirmation">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" required name="password_confirmation"
+                                                class="form-control form-control-lg" id="password_confirmation"
+                                                placeholder="Enter password again">
+
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-control-xs custom-checkbox">
-                                            <input type="checkbox" required name="agree" class="custom-control-input" id="checkbox">
-                                            <label class="custom-control-label" for="checkbox">I agree to Dashlite <a tabindex="-1" href="#">Privacy Policy</a> &amp; <a tabindex="-1" href="#"> Terms.</a></label>
+                                            <input type="checkbox" required name="agreed_to_policies" class="custom-control-input" id="checkbox">
+                                            <label class="custom-control-label" for="checkbox">I agree to <a tabindex="-1" href="#">Privacy Policy</a> &amp; <a tabindex="-1" href="#"> Terms.</a></label>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -70,7 +88,7 @@
                             <div class="nk-block nk-auth-footer">
 
                                 <div class="mt-3">
-                                    <p>&copy; 2022 DashLite. All Rights Reserved.</p>
+                                    <p>&copy; 2023. All Rights Reserved.</p>
                                 </div>
                             </div><!-- nk-block -->
                         </div><!-- nk-split-content -->

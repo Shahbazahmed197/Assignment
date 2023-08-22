@@ -40,7 +40,7 @@ class UpdatePasswordRequest extends FormRequest
     {
         return [
             'current_password' => 'required',
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'password' => ['required', 'confirmed', Password::defaults(),'different:current_password'],
         ];
     }
 }

@@ -17,6 +17,9 @@
         <div class="modal-body">
                 <form enctype="multipart/form-data" @isset($product) id="productupdateForm" @else id="productForm" @endisset class="form-validate is-alter">
                 @csrf
+                @isset($product)
+        @method('PUT')
+    @endisset
                  <!-- Product Name -->
         <div class="form-group">
             <label for="productName">Product Name</label>
@@ -62,7 +65,7 @@
        <!-- Product Images (Multiple Uploads) -->
         <label for="productImages">Product Images</label>
         @empty($view)
-            <div class="upload-zone" data-accepted-files="image/*">
+            <div class="upload-zone" id="imageDropzone" data-accepted-files="image/*">
 
                 <div class="dz-message" data-dz-message>
                     <span class="dz-message-text">Drag and drop file</span>
@@ -73,22 +76,21 @@
                 @foreach($product->images as $image)
                 <div class="dz-preview dz-processing dz-image-preview">
                     <div class="dz-image">
-                        <img data-dz-thumbnail src="{{ asset('storage/' . $image->path) }}">
+                        <img data-dz-thumbnail id="{{ $image->id }}" src="{{ asset('storage/' . $image->path) }}">
                     </div>
                     <a class="dz-remove" href="javascript:undefined;" data-dz-remove="">Remove file</a>
                 </div>
                 @endforeach
                 @endisset
             </div>
-        @endempty
-        {{-- @isset($product)
+            @else
             <div id="imagePreview" class="d-flex flex-wrap pt-3">
                 @foreach ($product->images as $image)
                     <img src="{{ asset('storage/' . $image->path) }}" class="img-thumbnail mr-2 mb-2"
                         style="max-height: 100px;">
                 @endforeach
             </div>
-        @endisset --}}
+        @endempty
     @empty($view)
         <div class="form-group">
             <button type="button" class="btn btn-primary text-dark submit-btn"

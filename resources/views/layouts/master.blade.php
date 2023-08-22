@@ -29,6 +29,11 @@
 .dataTable{
 width:100%
 }
+.user-avatar img:first-child {
+        height: 100%;
+        width:100%;
+        object-fit: fill;
+    }
     </style>
 
 
@@ -38,7 +43,9 @@ width:100%
 <body class="nk-body bg-lighter npc-general has-sidebar ">
     <div class="nk-app-root">
         <div class="nk-main ">
+            @if (auth()->user()->role=="admin")
             @include('partials.sidebar')
+            @endif
             <div class="nk-wrap ">
                 @include('partials.header')
                 <div class="nk-content ">

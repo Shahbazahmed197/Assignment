@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -133,24 +134,29 @@ class ProductController extends Controller
 
 
             // Remove previous categories and sync the new ones
-            if (isset($request["categories[]"])) {
-                $product->categories()->sync($request["categories[]"]);
+            if (isset($request["categories"])) {
+                $product->categories()->sync($request["categories"]);
             }
             // Remove previous images and attach the new ones
-            if ($request->hasFile('images')) {
-                foreach ($product->images as $storedImage) {
-                    File::delete(public_path('storage/', $storedImage->path));
-                    $storedImage->delete();
-                };
-                foreach ($request->file('images') as $image) {
-                    $originalExtension = $image->getClientOriginalExtension();
-                $image = Image::make($image)->resize('250', '250')->encode();
-                $filename = 'image_' . time() .'.'. $originalExtension; // Generate a unique filename
-                $imagePath = 'product_images/' . $filename;
-                Storage::disk('public')->put($imagePath, $image);
-                $product->images()->create(['path' => $imagePath]);
-                }
+            foreach ($request->images as $imageDataUrl) {
+                if (preg_match('/^data:image\/(\w+);base64,/', $imageDataUrl)) {
+                // Extract image type and data from the data URL
+                list($type, $data) = explode(';', $imageDataUrl);
+                list(, $data) = explode(',', $data);
+                $data = base64_decode($data);
+
+                // Generate a unique filename
+                $filename = time() . '_' . Str::random(10) . '.png';
+
+                // Save the image to storage
+                Storage::disk('public')->put('images/' . $filename, $data);
+
+                // You can also resize the image using Intervention Image
+                $image = Image::make($data);
+                $image->resize(250, 250)->save(public_path('storage/product_images/' . $filename));
+                $product->images()->create(['path' => 'product_images/' . $filename]);
             }
+        }
             $product->save();
             $response = response()->json(['message' => 'product updated successfully', 'product' => $product]);
         } else {
@@ -187,5 +193,34 @@ class ProductController extends Controller
         }
 
         return response()->json(['message' => 'Image uploaded successfully.']);
+    }
+    public function removeImage(Request $request)
+    {
+        $imageId = $request->input('imageId');
+        $imageUrl = $request->input('imagePath');
+
+        // Extract path from URL
+        $parsedUrl = parse_url($imageUrl);
+        $imagePath = str_replace('/storage/', '', $parsedUrl['path']);
+
+        // Remove the image from storage
+        if (Storage::disk('public')->exists($imagePath)) {
+            Storage::disk('public')->delete($imagePath);
+        }
+
+        // Detach the image from products using image ID
+        $image = ProductImage::find($request->input('imageId')); // Assuming you have an Image model
+        if(!empty($image)){
+           $image->delete();
+        $message="image removed from products successfully";
+        $success=true;
+        $code=200;
+       }else{
+        $message="No image found";
+        $success=false;
+        $code=422;
+       }
+        return response()->json(['success'=>$success,'message'=>$message],$code);
+
     }
 }

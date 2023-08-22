@@ -67,8 +67,11 @@
                 </div><!-- .modal-content -->
             </div><!-- .modal-dialog -->
         </div><!-- .modal -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         @push('scripts')
+
         <script>
+
     $(document).ready(function() {
         $('.update-profile').click(function() {
             console.log('Button clicked');
@@ -86,7 +89,7 @@
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
             // Send AJAX request to the controller
             $.ajax({
-                url: `{{route('profile.update','me')}}`,
+                url: '/profile/'+'me',
                 type: 'PUT',
                 data: formDataString,
                 contentType: 'application/json',

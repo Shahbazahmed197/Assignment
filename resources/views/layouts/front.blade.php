@@ -24,11 +24,31 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col pt-4 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+            @auth
+            @include('partials.header')
+            @else
+            @include('partials.guest-navigation')
+            @endauth
             @yield('content')
         </div>
         <script src="{{ asset('js/theme.js') }}"></script>
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/scripts.js') }}"></script>
         <script src="{{ asset('js/custom.js') }}"></script>
+        @if(isset($errors))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                NioApp.Toast('{{ $errors->first() }}', 'error');
+            });
+        </script>
+        @endif
+        @if(session('status'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var successMessage = @json(session('status'));
+                    NioApp.Toast(successMessage, 'success');
+                });
+            </script>
+            @endif
     </body>
 </html>
