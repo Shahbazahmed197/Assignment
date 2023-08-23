@@ -43,7 +43,7 @@ width:100%
 <body class="nk-body bg-lighter npc-general has-sidebar ">
     <div class="nk-app-root">
         <div class="nk-main ">
-            @if (auth()->user()->role=="admin")
+            @if (auth()->user()->hasRole('admin'))
             @include('partials.sidebar')
             @endif
             <div class="nk-wrap ">

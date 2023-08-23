@@ -15,64 +15,80 @@
             </div><!-- .nk-header-brand -->
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">
-                    <li class="dropdown user-dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <div class="user-toggle">
-                                <div class="user-avatar sm">
-                                    {{-- <em class="icon ni ni-user-alt"></em>
+                    <li>
+                        <a href="{{ route('web-category.index') }}" class="">Home</a>
+                    </li>
+                    @auth
+                        <li class="dropdown user-dropdown">
+
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <div class="user-toggle">
+                                    <div class="user-avatar sm">
+                                        {{-- <em class="icon ni ni-user-alt"></em>
                                                      --}}
-                                    @isset(auth()->user()->profile_image)
-                                        <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="profile picture">
-                                    @else
-                                        <em class="icon ni ni-user-alt"></em>
-                                    @endisset
-                                </div>
-                                <div class="user-info d-none d-md-block">
-                                    {{-- <div class="user-status">{{ auth()->user()->getRoleNames()->first() }}</div> --}}
-                                    <div class="user-name dropdown-indicator">{{ auth()->user()->name }}</div>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-right dropdown-menu-s1">
-                            <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
-                                <div class="user-card">
-                                    <div class="user-avatar">
                                         @isset(auth()->user()->profile_image)
-                                        <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="profile picture">
-                                    @else
-                                        <em class="icon ni ni-user-alt"></em>
-                                    @endisset
+                                            <img src="{{ asset('storage/' . auth()->user()->profile_image) }}"
+                                                alt="profile picture">
+                                        @else
+                                            <em class="icon ni ni-user-alt"></em>
+                                        @endisset
                                     </div>
-                                    <div class="user-info">
-                                        <span class="lead-text">{{ Auth::user()->name }}</span>
-                                        <span class="sub-text">{{ Auth::user()->email }}</span>
+                                    <div class="user-info d-none d-md-block">
+                                        {{-- <div class="user-status">{{ auth()->user()->getRoleNames()->first() }}</div> --}}
+                                        <div class="user-name dropdown-indicator">{{ auth()->user()->name }}</div>
                                     </div>
                                 </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-md dropdown-menu-right dropdown-menu-s1">
+                                <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+                                    <div class="user-card">
+                                        <div class="user-avatar">
+                                            @isset(auth()->user()->profile_image)
+                                                <img src="{{ asset('storage/' . auth()->user()->profile_image) }}"
+                                                    alt="profile picture">
+                                            @else
+                                                <em class="icon ni ni-user-alt"></em>
+                                            @endisset
+                                        </div>
+                                        <div class="user-info">
+                                            <span class="lead-text">{{ Auth::user()->name }}</span>
+                                            <span class="sub-text">{{ Auth::user()->email }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-inner">
+                                    <ul class="link-list">
+                                        <li><a href="{{ route('profile.index') }}"><em
+                                                    class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown-inner">
+                                    <ul class="link-list">
+                                        <form id="logoutForm" method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <li>
+                                                <a id="submitFormLink" onClick="$('#logoutForm').submit()">
+                                                    <em class="icon ni ni-signout">
+                                                    </em>
+                                                    <span>Sign out</span>
+                                                </a>
+                                            </li>
+                                        </form>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="dropdown-inner">
-                                <ul class="link-list">
-                                    <li><a href="{{ route('profile.index') }}"><em
-                                                class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
-                                </ul>
-                            </div>
-                            <div class="dropdown-inner">
-                                <ul class="link-list">
-                                    <form id="logoutForm" method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <li>
-                                            <a id="submitFormLink" onClick="$('#logoutForm').submit()">
-                                                <em class="icon ni ni-signout">
-                                                </em>
-                                                <span>Sign out</span>
-                                            </a>
-                                        </li>
-                                    </form>
-                                </ul>
-                            </div>
-                        </div>
-                    </li><!-- .dropdown -->
+                        </li><!-- .dropdown -->
+                    @else
+                        <li>
+                            <a href="{{ route('login') }}" class=" ">Log in</a>
+                        </li>
+                        <li>
+                                <a href="{{ route('register') }}" class=" ">Register</a>
+                        </li>
+                    @endauth
 
                 </ul><!-- .nk-quick-nav -->
+
             </div><!-- .nk-header-tools -->
         </div><!-- .nk-header-wrap -->
     </div><!-- .container-fliud -->
