@@ -20,15 +20,17 @@
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
             <link id="skin-default" rel="stylesheet" href="{{ asset('css/theme.css') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('css/dashlite.css') }}">
-
+<style>
+    .user-avatar img:first-child {
+        height: 100%;
+        width:100%;
+        object-fit: fill;
+    }
+</style>
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col pt-4 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            @auth
             @include('partials.header')
-            @else
-            @include('partials.guest-navigation')
-            @endauth
             @yield('content')
         </div>
         <script src="{{ asset('js/theme.js') }}"></script>

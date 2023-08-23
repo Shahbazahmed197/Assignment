@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         if (!$request->user()->hasVerifiedEmail()) {
             SendVerifyEmailNotification::dispatch($request->user());
-            return redirect()->intended(RouteServiceProvider::VERIFICATION)->with('status','Check your mail to verify');
+            return redirect()->intended(RouteServiceProvider::VERIFICATION)->with('status','Check your mail to verify your account');
         }
         return redirect()->intended( $request->user()->hasRole('admin') ? RouteServiceProvider::DASHBOARD :
         RouteServiceProvider::HOME);

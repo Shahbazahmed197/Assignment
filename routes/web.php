@@ -54,7 +54,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('setting', SettingController::class);
     Route::post('/profile-picture', [ProfileController::class, 'updateProfilePicture'])->name('picture.update');
 });
-// Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-// Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 require __DIR__ . '/auth.php';

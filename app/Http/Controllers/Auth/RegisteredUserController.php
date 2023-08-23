@@ -51,6 +51,6 @@ class RegisteredUserController extends Controller
         SendVerifyEmailNotification::dispatch($user);
         SendAdminNotification::dispatch($user);
         // Auth::login($user);
-        return redirect(route('verification.notice'))->with('status','Check your mail to verify');
+        return redirect(route('verification.notice'))->with('status','Check your mail to verify your account');
     }
 }
